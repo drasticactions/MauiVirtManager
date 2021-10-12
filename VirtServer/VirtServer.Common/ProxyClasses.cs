@@ -45,16 +45,16 @@ namespace VirtServer.Common
         public bool MetricsEnabled { get; set; }
 
         [JsonPropertyName("KeepaliveInterval")]
-        public long KeepaliveInterval { get; set; }
+        public double KeepaliveInterval { get; set; }
 
         [JsonPropertyName("KeepaliveCount")]
-        public long KeepaliveCount { get; set; }
+        public double KeepaliveCount { get; set; }
 
         [JsonPropertyName("Credentials")]
         public object Credentials { get; set; }
 
         [JsonPropertyName("MetricsIntervalSeconds")]
-        public long MetricsIntervalSeconds { get; set; }
+        public double MetricsIntervalSeconds { get; set; }
     }
 
     public partial class Domain
@@ -66,7 +66,7 @@ namespace VirtServer.Common
         public bool IsActive { get; set; }
 
         [JsonPropertyName("Id")]
-        public long Id { get; set; }
+        public double Id { get; set; }
 
         [JsonPropertyName("Name")]
         public string Name { get; set; }
@@ -79,19 +79,19 @@ namespace VirtServer.Common
         public DateTimeOffset CpuTimeUsed { get; set; }
 
         [JsonPropertyName("MemoryUsedKbyte")]
-        public long MemoryUsedKbyte { get; set; }
+        public double MemoryUsedKbyte { get; set; }
 
         [JsonPropertyName("MemoryMaxKbyte")]
-        public long MemoryMaxKbyte { get; set; }
+        public double MemoryMaxKbyte { get; set; }
 
         [JsonPropertyName("CpuCount")]
-        public long CpuCount { get; set; }
+        public double CpuCount { get; set; }
 
         [JsonPropertyName("Connection")]
         public object Connection { get; set; }
 
         [JsonPropertyName("State")]
-        public long State { get; set; }
+        public double State { get; set; }
 
         [JsonPropertyName("DriverType")]
         public string DriverType { get; set; }
@@ -100,7 +100,7 @@ namespace VirtServer.Common
         public DateTimeOffset ModifiedAt { get; set; }
 
         [JsonPropertyName("UptimeSeconds")]
-        public long UptimeSeconds { get; set; }
+        public double UptimeSeconds { get; set; }
 
         [JsonPropertyName("GraphicsDevices")]
         public GraphicsDevice[]? GraphicsDevices { get; set; }
@@ -127,16 +127,16 @@ namespace VirtServer.Common
     public partial class CpuUtilization
     {
         [JsonPropertyName("LastSecond")]
-        public long LastSecond { get; set; }
+        public double LastSecond { get; set; }
 
         [JsonPropertyName("LastMinute")]
-        public long LastMinute { get; set; }
+        public double LastMinute { get; set; }
 
         [JsonPropertyName("PerSecondValues")]
-        public long[]? PerSecondValues { get; set; }
+        public double[]? PerSecondValues { get; set; }
 
         [JsonPropertyName("PerMinuteValues")]
-        public long[]? PerMinuteValues { get; set; }
+        public double[]? PerMinuteValues { get; set; }
     }
 
     public partial class DiskDevice
@@ -145,10 +145,10 @@ namespace VirtServer.Common
         public object Volume { get; set; }
 
         [JsonPropertyName("Type")]
-        public long Type { get; set; }
+        public double Type { get; set; }
 
         [JsonPropertyName("Device")]
-        public long Device { get; set; }
+        public double Device { get; set; }
 
         [JsonPropertyName("Driver")]
         public Driver Driver { get; set; }
@@ -169,7 +169,7 @@ namespace VirtServer.Common
     public partial class Address
     {
         [JsonPropertyName("Type")]
-        public long Type { get; set; }
+        public double Type { get; set; }
 
         [JsonPropertyName("Domain")]
         public string Domain { get; set; }
@@ -185,15 +185,15 @@ namespace VirtServer.Common
 
         [JsonPropertyName("Controller")]
         [JsonIgnore]
-        public long? Controller { get; set; }
+        public double? Controller { get; set; }
 
         [JsonPropertyName("Target")]
         [JsonIgnore]
-        public long? Target { get; set; }
+        public double? Target { get; set; }
 
         [JsonPropertyName("Unit")]
         [JsonIgnore]
-        public long? Unit { get; set; }
+        public double? Unit { get; set; }
     }
 
     public partial class Driver
@@ -226,19 +226,19 @@ namespace VirtServer.Common
         public string Device { get; set; }
 
         [JsonPropertyName("Bus")]
-        public long Bus { get; set; }
+        public double Bus { get; set; }
     }
 
     public partial class GraphicsDevice
     {
         [JsonPropertyName("Type")]
-        public long Type { get; set; }
+        public double Type { get; set; }
 
         [JsonPropertyName("Listen")]
         public object Listen { get; set; }
 
         [JsonPropertyName("Port")]
-        public long Port { get; set; }
+        public double Port { get; set; }
 
         [JsonPropertyName("IsAutoPort")]
         public bool IsAutoPort { get; set; }
@@ -247,7 +247,7 @@ namespace VirtServer.Common
     public partial class NetworkInterface
     {
         [JsonPropertyName("Type")]
-        public long Type { get; set; }
+        public double Type { get; set; }
 
         [JsonPropertyName("MAC")]
         public Mac Mac { get; set; }
@@ -292,28 +292,28 @@ namespace VirtServer.Common
         public string Hostname { get; set; }
 
         [JsonPropertyName("MemFreeBytes")]
-        public long MemFreeBytes { get; set; }
+        public double MemFreeBytes { get; set; }
 
         [JsonPropertyName("CpuModelName")]
         public string CpuModelName { get; set; }
 
         [JsonPropertyName("CpuFrequencyMhz")]
-        public long CpuFrequencyMhz { get; set; }
+        public double CpuFrequencyMhz { get; set; }
 
         [JsonPropertyName("CpuNumaNodes")]
-        public long CpuNumaNodes { get; set; }
+        public double CpuNumaNodes { get; set; }
 
         [JsonPropertyName("CpuSocketsPerNode")]
-        public long CpuSocketsPerNode { get; set; }
+        public double CpuSocketsPerNode { get; set; }
 
         [JsonPropertyName("CpuCoresPerSocket")]
-        public long CpuCoresPerSocket { get; set; }
+        public double CpuCoresPerSocket { get; set; }
 
         [JsonPropertyName("CpuThreadsPerCore")]
-        public long CpuThreadsPerCore { get; set; }
+        public double CpuThreadsPerCore { get; set; }
 
         [JsonPropertyName("MemoryKBytes")]
-        public long MemoryKBytes { get; set; }
+        public double MemoryKBytes { get; set; }
     }
 
     public partial class StoragePoolElement
@@ -328,16 +328,16 @@ namespace VirtServer.Common
         public string Name { get; set; }
 
         [JsonPropertyName("State")]
-        public long State { get; set; }
+        public double State { get; set; }
 
         [JsonPropertyName("CapacityInByte")]
-        public long CapacityInByte { get; set; }
+        public double CapacityInByte { get; set; }
 
         [JsonPropertyName("ByteAvailable")]
-        public long ByteAvailable { get; set; }
+        public double ByteAvailable { get; set; }
 
         [JsonPropertyName("ByteAllocated")]
-        public long ByteAllocated { get; set; }
+        public double ByteAllocated { get; set; }
 
         [JsonPropertyName("DriverType")]
         public string DriverType { get; set; }
@@ -358,13 +358,13 @@ namespace VirtServer.Common
         public string Name { get; set; }
 
         [JsonPropertyName("VolumeType")]
-        public long VolumeType { get; set; }
+        public double VolumeType { get; set; }
 
         [JsonPropertyName("CapacityInByte")]
-        public long CapacityInByte { get; set; }
+        public double CapacityInByte { get; set; }
 
         [JsonPropertyName("ByteAllocated")]
-        public long ByteAllocated { get; set; }
+        public double ByteAllocated { get; set; }
 
         [JsonPropertyName("StoragePool")]
         public StorageVolumeStoragePool StoragePool { get; set; }
@@ -391,16 +391,16 @@ namespace VirtServer.Common
         public string Name { get; set; }
 
         [JsonPropertyName("State")]
-        public long State { get; set; }
+        public double State { get; set; }
 
         [JsonPropertyName("CapacityInByte")]
-        public long CapacityInByte { get; set; }
+        public double CapacityInByte { get; set; }
 
         [JsonPropertyName("ByteAvailable")]
-        public long ByteAvailable { get; set; }
+        public double ByteAvailable { get; set; }
 
         [JsonPropertyName("ByteAllocated")]
-        public long ByteAllocated { get; set; }
+        public double ByteAllocated { get; set; }
 
         [JsonPropertyName("DriverType")]
         public string DriverType { get; set; }
