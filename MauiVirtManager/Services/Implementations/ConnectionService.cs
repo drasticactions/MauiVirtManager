@@ -45,9 +45,9 @@ namespace MauiVirtManager.Services
                 .WithUrl(string.Format(this.libvirtEndpoint, this.baseEndpoint))
                 .Build();
 
-            this.connection.On<StoragePoolRefreshEventCommand>("StoragePoolRefreshEventReceived", this.StoragePoolRefreshEventReceived);
-            this.connection.On<StoragePoolLifecycleEventCommand>("StoragePoolLifecycleEventReceived", this.StoragePoolLifecycleEventReceived);
-            this.connection.On<DomainEventCommand>("DomainEventReceived", this.DomainEventReceived);
+            this.connection.On<string>("StoragePoolRefreshEventReceived", this.StoragePoolRefreshEventReceived);
+            this.connection.On<string>("StoragePoolLifecycleEventReceived", this.StoragePoolLifecycleEventReceived);
+            this.connection.On<string>("DomainEventReceived", this.DomainEventReceived);
 
             this.connection.Closed += this.Connection_Closed;
             this.connection.Reconnected += this.Connection_Reconnected;
@@ -114,17 +114,17 @@ namespace MauiVirtManager.Services
             System.Diagnostics.Debug.WriteLine(arg);
         }
 
-        private void DomainEventReceived(DomainEventCommand arg)
+        private void DomainEventReceived(string arg)
         {
             System.Diagnostics.Debug.WriteLine(arg);
         }
 
-        private void StoragePoolLifecycleEventReceived(StoragePoolLifecycleEventCommand arg)
+        private void StoragePoolLifecycleEventReceived(string arg)
         {
             System.Diagnostics.Debug.WriteLine(arg);
         }
 
-        private void StoragePoolRefreshEventReceived(StoragePoolRefreshEventCommand arg)
+        private void StoragePoolRefreshEventReceived(string arg)
         {
             System.Diagnostics.Debug.WriteLine(arg);
         }

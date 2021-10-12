@@ -42,6 +42,7 @@ namespace MauiVirtManager.ViewModels
         public override async Task LoadAsync()
         {
             await base.LoadAsync();
+            await this.Connection.StartConnectionAsync();
             this.Domains = await this.Connection.GetDomainsAsync();
         }
     }
