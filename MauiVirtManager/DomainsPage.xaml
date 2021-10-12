@@ -3,13 +3,14 @@
 			 x:Class="MauiVirtManager.DomainsPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:common="clr-namespace:VirtServer.Common;assembly=VirtServer.Common"
              xmlns:local="clr-namespace:MauiVirtManager">
     <ContentPage.Content>
-        <CollectionView ItemsSource="{Binding Domains}">
+        <CollectionView  ItemsSource="{Binding Domains}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="{x:Type common:Domain}">
                     <Grid>
-                        <Label Text="{Binding .}" />
+                        <Label Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
