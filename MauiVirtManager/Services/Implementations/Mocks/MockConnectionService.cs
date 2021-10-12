@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
+using MauiVirtManager.Tools.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
@@ -19,6 +20,9 @@ namespace MauiVirtManager.Services
     /// </summary>
     public class MockConnectionService : IConnectionService
     {
+        /// <inheritdoc/>
+        public event EventHandler<ConnEventArgs> ConnectionEventHandler;
+
         /// <inheritdoc/>
         public HubConnectionState State => HubConnectionState.Connected;
 

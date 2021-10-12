@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MauiVirtManager.Tools.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
@@ -15,6 +16,11 @@ namespace MauiVirtManager.Services
     /// </summary>
     public interface IConnectionService
     {
+        /// <summary>
+        /// Event Handler for connection events.
+        /// </summary>
+        event EventHandler<ConnEventArgs> ConnectionEventHandler;
+
         /// <summary>
         /// Gets the current SignalR Connection State.
         /// </summary>

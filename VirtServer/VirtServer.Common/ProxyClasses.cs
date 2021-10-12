@@ -6,6 +6,36 @@ using System.Text.Json.Serialization;
 
 namespace VirtServer.Common
 {
+    public partial class DomainEventCommandProxy
+    {
+        [JsonPropertyName("Domain")]
+        public Domain Domain { get; set; }
+
+        [JsonPropertyName("EventArgs")]
+        public ConnectionEventArgs EventArgs { get; set; }
+    }
+
+    public partial class StoragePoolEventCommandProxy
+    {
+        [JsonPropertyName("StoragePool")]
+        public StoragePoolElement StoragePool { get; set; }
+
+        [JsonPropertyName("EventArgs")]
+        public ConnectionEventArgs EventArgs { get; set; }
+    }
+
+    public partial class ConnectionEventArgs
+    {
+        [JsonPropertyName("UniqueId")]
+        public Guid UniqueId { get; set; }
+
+        [JsonPropertyName("EventType")]
+        public long EventType { get; set; }
+
+        [JsonPropertyName("Detail")]
+        public long Detail { get; set; }
+    }
+
     public partial class Connection
     {
         [JsonPropertyName("IsAlive")]

@@ -8,7 +8,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using MauiVirtManager.Tools.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
@@ -31,7 +33,6 @@ namespace MauiVirtManager.Services
         private string libvirtEndpoint = "{0}/libvirt";
         private HubConnection connection;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionService"/> class.
         /// </summary>
@@ -53,6 +54,9 @@ namespace MauiVirtManager.Services
             this.connection.Reconnected += this.Connection_Reconnected;
             this.connection.Reconnecting += this.Connection_Reconnecting;
         }
+
+        /// <inheritdoc/>
+        public event EventHandler<ConnEventArgs> ConnectionEventHandler;
 
         /// <inheritdoc/>
         public HubConnectionState State => this.connection?.State ?? HubConnectionState.Disconnected;
@@ -99,34 +103,79 @@ namespace MauiVirtManager.Services
             return this.connection.StopAsync();
         }
 
-        private async Task Connection_Reconnecting(Exception arg)
+        private Task Connection_Reconnecting(Exception arg)
         {
+            this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+            { ArgTypes = ConnectionEventArgTypes.SignalRReconnecting, Data = arg });
             System.Diagnostics.Debug.WriteLine(arg);
+            return Task.CompletedTask;
         }
 
-        private async Task Connection_Reconnected(string arg)
+        private Task Connection_Reconnected(string arg)
         {
+            this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+            { ArgTypes = ConnectionEventArgTypes.SignalRReconnected, Data = arg });
             System.Diagnostics.Debug.WriteLine(arg);
+            return Task.CompletedTask;
         }
 
-        private async Task Connection_Closed(Exception arg)
+        private Task Connection_Closed(Exception arg)
         {
+            this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+            { ArgTypes = ConnectionEventArgTypes.SignalRClosed, Data = arg });
             System.Diagnostics.Debug.WriteLine(arg);
+            return Task.CompletedTask;
         }
 
         private void DomainEventReceived(string arg)
         {
-            System.Diagnostics.Debug.WriteLine(arg);
+            try
+            {
+                var eventProxy = JsonSerializer.Deserialize<DomainEventCommandProxy>(arg);
+                this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+                { ArgTypes = ConnectionEventArgTypes.DomainEventRecieved, Data = eventProxy });
+                System.Diagnostics.Debug.WriteLine(arg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Show these errors to the user with IErrorHandler?
+                // Log them to a service?
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
 
         private void StoragePoolLifecycleEventReceived(string arg)
         {
-            System.Diagnostics.Debug.WriteLine(arg);
+            try
+            {
+                var eventProxy = JsonSerializer.Deserialize<StoragePoolEventCommandProxy>(arg);
+                this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+                { ArgTypes = ConnectionEventArgTypes.StoragePoolLifecycleEventReceived, Data = eventProxy });
+                System.Diagnostics.Debug.WriteLine(arg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Show these errors to the user with IErrorHandler?
+                // Log them to a service?
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
 
         private void StoragePoolRefreshEventReceived(string arg)
         {
-            System.Diagnostics.Debug.WriteLine(arg);
+            try
+            {
+                var eventProxy = JsonSerializer.Deserialize<StoragePoolEventCommandProxy>(arg);
+                this.ConnectionEventHandler?.Invoke(this, new ConnEventArgs()
+                { ArgTypes = ConnectionEventArgTypes.StoragePoolRefreshEventReceived, Data = eventProxy });
+                System.Diagnostics.Debug.WriteLine(arg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Show these errors to the user with IErrorHandler?
+                // Log them to a service?
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
     }
 }
