@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
 
-namespace MauiVirtManager.Services.Interfaces
+namespace MauiVirtManager.Services
 {
     /// <summary>
     /// Handles the Libvirt Service Connections.
