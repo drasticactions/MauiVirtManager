@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
+using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
 namespace MauiVirtManager.Services
@@ -18,6 +19,9 @@ namespace MauiVirtManager.Services
     /// </summary>
     public class MockConnectionService : IConnectionService
     {
+        /// <inheritdoc/>
+        public HubConnectionState State => HubConnectionState.Connected;
+
         /// <inheritdoc/>
         public Task<Connection> GetConnectionAsync()
         {
@@ -46,6 +50,18 @@ namespace MauiVirtManager.Services
         public Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync()
         {
             return Task.FromResult(JsonSerializer.Deserialize<List<StorageVolumeStoragePool>>("[{\"Key\":\"/var/lib/libvirt/images/macos-bigsur-base.qcow2\",\"Path\":\"/var/lib/libvirt/images/macos-bigsur-base.qcow2\",\"Name\":\"macos-bigsur-base.qcow2\",\"VolumeType\":0,\"CapacityInByte\":274877906944,\"ByteAllocated\":30348349440,\"StoragePool\":{\"UniqueId\":\"d0f6c71c-bac9-4d54-be9c-d6c244415084\",\"IsActive\":true,\"Name\":\"default\",\"State\":2,\"CapacityInByte\":1997713510400,\"ByteAvailable\":1951045537792,\"ByteAllocated\":46667972608,\"DriverType\":\"dir\",\"Volumes\":[null]},\"Format\":\"qcow2\",\"CreatedAt\":\"2021-10-11T14:20:18\",\"ModifiedAt\":\"2021-10-11T14:20:14\"}]"));
+        }
+
+        /// <inheritdoc/>
+        public Task StartConnectionAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        public Task StopConnectionAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }

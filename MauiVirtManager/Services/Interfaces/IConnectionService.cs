@@ -4,10 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using IDNT.AppBasics.Virtualization.Libvirt;
+using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
 namespace MauiVirtManager.Services
@@ -17,6 +15,11 @@ namespace MauiVirtManager.Services
     /// </summary>
     public interface IConnectionService
     {
+        /// <summary>
+        /// Gets the current SignalR Connection State.
+        /// </summary>
+        HubConnectionState State { get; }
+
         /// <summary>
         /// Gets the current Libvirt Connection.
         /// </summary>
@@ -47,5 +50,17 @@ namespace MauiVirtManager.Services
         /// </summary>
         /// <returns>List of <see cref="StorageVolumeStoragePool"/>.</returns>
         Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync();
+
+        /// <summary>
+        /// Start SignalR connection to Server.
+        /// </summary>
+        /// <returns><see cref="Task"/>.</returns>
+        Task StartConnectionAsync();
+
+        /// <summary>
+        /// Start SignalR connection to Server.
+        /// </summary>
+        /// <returns><see cref="Task"/>.</returns>
+        Task StopConnectionAsync();
     }
 }
