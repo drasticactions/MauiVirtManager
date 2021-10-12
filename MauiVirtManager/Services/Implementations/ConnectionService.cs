@@ -19,16 +19,16 @@ namespace MauiVirtManager.Services
     /// </summary>
     public class ConnectionService : IConnectionService
     {
-        private static string baseEndpoint;
+        private string baseEndpoint;
         private HttpClient client;
 
-        private string connectionEndpoint = $"{baseEndpoint}/connection";
-        private string domainsEndpoint = $"{baseEndpoint}/domains";
-        private string domainEndpoint = $"{baseEndpoint}/domain";
-        private string storagePoolsEndpoint = $"{baseEndpoint}/storagepools";
-        private string storagePoolEndpoint = $"{baseEndpoint}/storagepool";
-        private string storageVolumesEndpoint = $"{baseEndpoint}/storagevolumes";
-        private string libvirtEndpoint = $"{baseEndpoint}/libvirt";
+        private string connectionEndpoint = "{0}/connection";
+        private string domainsEndpoint = "{0}/domains";
+        private string domainEndpoint = "{0}/domain";
+        private string storagePoolsEndpoint = "{0}/storagepools";
+        private string storagePoolEndpoint = "{0}/storagepool";
+        private string storageVolumesEndpoint = "{0}/storagevolumes";
+        private string libvirtEndpoint = "{0}/libvirt";
         private HubConnection connection;
 
 
@@ -39,10 +39,10 @@ namespace MauiVirtManager.Services
         public ConnectionService(string baseUri = "http://drastic-nuc.local:5000")
         {
             // HACK: Hardcoded URI for computer. Needs to be taken from the user!
-            baseEndpoint = baseUri;
+            this.baseEndpoint = baseUri;
             this.client = new HttpClient();
             this.connection = new HubConnectionBuilder()
-                .WithUrl(this.libvirtEndpoint)
+                .WithUrl(string.Format(this.libvirtEndpoint, this.baseEndpoint))
                 .Build();
 
             this.connection.On<StoragePoolRefreshEventCommand>("StoragePoolRefreshEventReceived", this.StoragePoolRefreshEventReceived);
@@ -60,31 +60,31 @@ namespace MauiVirtManager.Services
         /// <inheritdoc/>
         public Task<Connection> GetConnectionAsync()
         {
-            return this.client.GetFromJsonAsync<Connection>(this.connectionEndpoint);
+            return this.client.GetFromJsonAsync<Connection>(string.Format(this.connectionEndpoint, this.baseEndpoint));
         }
 
         /// <inheritdoc/>
         public Task<Domain> GetDomainAsync(Guid domainId)
         {
-            return this.client.GetFromJsonAsync<Domain>($"{this.domainEndpoint}?id={domainId}");
+            return this.client.GetFromJsonAsync<Domain>($"{string.Format(this.domainEndpoint, this.baseEndpoint)}?id={domainId}");
         }
 
         /// <inheritdoc/>
         public Task<List<Domain>> GetDomainsAsync()
         {
-            return this.client.GetFromJsonAsync<List<Domain>>(this.domainsEndpoint);
+            return this.client.GetFromJsonAsync<List<Domain>>(string.Format(this.domainsEndpoint, this.baseEndpoint));
         }
 
         /// <inheritdoc/>
         public Task<List<StoragePoolElement>> GetStoragePoolsAsync()
         {
-            return this.client.GetFromJsonAsync<List<StoragePoolElement>>(this.storagePoolsEndpoint);
+            return this.client.GetFromJsonAsync<List<StoragePoolElement>>(string.Format(this.storagePoolsEndpoint, this.baseEndpoint));
         }
 
         /// <inheritdoc/>
         public Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync()
         {
-            return this.client.GetFromJsonAsync<List<StorageVolumeStoragePool>>(this.storageVolumesEndpoint);
+            return this.client.GetFromJsonAsync<List<StorageVolumeStoragePool>>(string.Format(this.storageVolumesEndpoint, this.baseEndpoint));
         }
 
         /// <inheritdoc/>
