@@ -41,6 +41,10 @@
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
+
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<!-- Required - WinUI does not yet have buildTransitive for everything -->
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0-experimental1" />
@@ -52,10 +56,29 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0-rc.1.21452.15" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\VirtServer\VirtServer.Common\VirtServer.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Translations\Common.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Common.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Translations\Common.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Common.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
