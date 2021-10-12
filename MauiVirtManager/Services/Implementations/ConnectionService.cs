@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using VirtServer.Common;
 
-namespace MauiVirtManager.Services.Implementations
+namespace MauiVirtManager.Services
 {
     /// <summary>
     /// Libvirt Connection Service.
