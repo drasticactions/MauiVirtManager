@@ -3,6 +3,7 @@
 // </copyright>
 
 using MauiVirtManager.Services;
+using MauiVirtManager.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls.Hosting;
@@ -25,6 +26,13 @@ namespace MauiVirtManager
             var builder = MauiApp.CreateBuilder();
             builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddSingleton<IErrorHandlerService, ErrorHandlerService>();
+
+            // Debug, used for Mock Data.
+            // TODO: Could be used for Unit Testing?
+            builder.Services.AddSingleton<IConnectionService, MockConnectionService>();
+
+            builder.Services.AddTransient<DomainsViewModel>();
+            builder.Services.AddTransient<DomainsPage>();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>

@@ -28,6 +28,7 @@ namespace MauiVirtManager.ViewModels
             this.Services = services;
             this.Navigation = services.GetService<INavigationService>();
             this.Error = services.GetService<IErrorHandlerService>();
+            this.Connection = services.GetService<IConnectionService>();
             this.CloseDialogCommand = new AsyncCommand(
                async () => await this.ExecuteCloseDialogCommand(),
                null,
@@ -99,6 +100,11 @@ namespace MauiVirtManager.ViewModels
         /// Gets the navigation service.
         /// </summary>
         protected INavigationService Navigation { get; private set; }
+
+        /// <summary>
+        /// Gets the connection service.
+        /// </summary>
+        protected IConnectionService Connection { get; private set; }
 
         /// <summary>
         /// Gets the error handler service.

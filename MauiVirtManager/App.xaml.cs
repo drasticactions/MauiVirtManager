@@ -28,6 +28,8 @@ namespace MauiVirtManager
             this.services = services;
             this.navigation = services.GetService<INavigationService>();
             this.InitializeComponent();
+
+            this.MainPage = this.services.GetService<DomainsPage>();
         }
     }
 }

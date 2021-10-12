@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="IDNT.AppBasics.Virtualization.Libvirt" Version="1.0.9" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 
 </Project>

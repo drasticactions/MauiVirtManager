@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
+using VirtServer.Common;
 
 namespace MauiVirtManager.Services
 {
@@ -19,32 +20,32 @@ namespace MauiVirtManager.Services
         /// <summary>
         /// Gets the current Libvirt Connection.
         /// </summary>
-        /// <returns><see cref="LibvirtConnection"/>.</returns>
-        Task<LibvirtConnection> GetConnectionAsync();
+        /// <returns><see cref="Connection"/>.</returns>
+        Task<Connection> GetConnectionAsync();
 
         /// <summary>
         /// Gets the list of domains (VMs).
         /// </summary>
-        /// <returns>List of<see cref="LibvirtDomain"/>.</returns>
-        Task<List<LibvirtDomain>> GetDomainsAsync();
+        /// <returns>List of<see cref="Domain"/>.</returns>
+        Task<List<Domain>> GetDomainsAsync();
 
         /// <summary>
         /// Gets the domain given the GUID.
         /// </summary>
         /// <param name="domainId">GUID of the domain.</param>
-        /// <returns><see cref="LibvirtDomain"/>.</returns>
-        Task<LibvirtDomain> GetDomainAsync(Guid domainId);
+        /// <returns><see cref="Domain"/>.</returns>
+        Task<Domain> GetDomainAsync(Guid domainId);
 
         /// <summary>
         /// Gets the list of Storage Pools.
         /// </summary>
-        /// <returns>List of <see cref="LibvirtStoragePool"/>.</returns>
-        Task<List<LibvirtStoragePool>> GetStoragePoolsAsync();
+        /// <returns>List of <see cref="StoragePoolElement"/>.</returns>
+        Task<List<StoragePoolElement>> GetStoragePoolsAsync();
 
         /// <summary>
         /// Gets the list of Storage Volumes.
         /// </summary>
-        /// <returns>List of <see cref="LibvirtStorageVolume"/>.</returns>
-        Task<List<LibvirtStorageVolume>> GetStorageVolumesAsync();
+        /// <returns>List of <see cref="StorageVolumeStoragePool"/>.</returns>
+        Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync();
     }
 }
