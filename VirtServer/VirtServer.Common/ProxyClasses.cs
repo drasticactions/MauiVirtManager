@@ -6,6 +6,23 @@ using System.Text.Json.Serialization;
 
 namespace VirtServer.Common
 {
+
+    public class DomainStateUpdate
+    {
+        public Guid DomainId { get; set; }
+
+        public DomainState State { get; set; }
+    }
+
+    public enum DomainState
+    {
+        Empty,
+        Shutdown,
+        Suspend,
+        Reset,
+        Resume
+    }
+
     public partial class DomainEventCommandProxy
     {
         [JsonPropertyName("Domain")]
