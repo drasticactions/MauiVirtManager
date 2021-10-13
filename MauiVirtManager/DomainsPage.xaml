@@ -3,27 +3,30 @@
 			 x:Class="MauiVirtManager.DomainsPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:MauiVirtManager.Translations"
              xmlns:common="clr-namespace:VirtServer.Common;assembly=VirtServer.Common"
              xmlns:local="clr-namespace:MauiVirtManager">
     <ContentPage.Content>
-        <CollectionView  ItemsSource="{Binding Domains}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type common:Domain}">
-                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="75, *, 75">
-                        <Grid.Resources>
-                            <Style TargetType="Label">
-                                <Style.Setters>
-                                    <Setter Property="Padding" Value="15,5,5,0" />
-                                </Style.Setters>
-                            </Style>
-                        </Grid.Resources>
-                        <RoundRectangle Grid.Column="0" Grid.RowSpan="2" WidthRequest="50" HeightRequest="50" Fill="Blue" Stroke="Red" StrokeThickness="3" />
-                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" BackgroundColor="AliceBlue" FontAttributes="Bold" />
-                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding State, Converter={StaticResource DomainStateConverter}}" BackgroundColor="Bisque" />
-                        <Image Grid.Column="2" Grid.RowSpan="2" HeightRequest="50" WidthRequest="50" Source="{Binding DomainImage, Converter={StaticResource DomainScreenshotImageConverter}}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <VerticalStackLayout>
+            <ScrollView>
+                <HorizontalStackLayout>
+                    <Button 
+                        Command="{Binding StartConnectionCommand}" 
+                        Text="{x:Static resources:Common.StartConnectionButton}" />
+                </HorizontalStackLayout>
+            </ScrollView>
+            <CollectionView  ItemsSource="{Binding Domains}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type common:Domain}">
+                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="75, *, 75">
+                            <Image HeightRequest="50" WidthRequest="50" Grid.RowSpan="2" Source="{Binding State, Converter={StaticResource DomainStateImageConverter}}" />
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Grid.Row="1" Text="{Binding State, Converter={StaticResource DomainStateConverter}}" />
+                            <Image Grid.Column="2" Grid.RowSpan="2" HeightRequest="50" WidthRequest="50" Source="{Binding DomainImage, Converter={StaticResource DomainScreenshotImageConverter}}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </local:BasePage>
