@@ -3,17 +3,26 @@
 			 x:Class="MauiVirtManager.DomainsPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:MauiVirtManager.Translations"
              xmlns:common="clr-namespace:VirtServer.Common;assembly=VirtServer.Common"
              xmlns:local="clr-namespace:MauiVirtManager">
     <ContentPage.Content>
-        <CollectionView  ItemsSource="{Binding Domains}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type common:Domain}">
-                    <Grid>
-                        <Label Text="{Binding Name}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <VerticalStackLayout>
+            <ScrollView>
+                <HorizontalStackLayout>
+                    <Button 
+                        Text="{x:Static resources:Common.AddConnectionButton}" />
+                </HorizontalStackLayout>
+            </ScrollView>
+            <CollectionView  ItemsSource="{Binding Domains}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type common:Domain}">
+                        <Grid>
+                            <Label Text="{Binding Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </local:BasePage>
