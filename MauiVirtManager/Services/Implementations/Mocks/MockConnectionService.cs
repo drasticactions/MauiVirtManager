@@ -58,12 +58,6 @@ namespace MauiVirtManager.Services
         }
 
         /// <inheritdoc/>
-        public Task StartConnectionAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <inheritdoc/>
         public Task StopConnectionAsync()
         {
             return Task.CompletedTask;
@@ -77,6 +71,12 @@ namespace MauiVirtManager.Services
 
         /// <inheritdoc/>
         public Task<Stream> GetDomainImage(Guid domainId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public Task StartConnectionAsync(string connectionString)
         {
             throw new NotImplementedException();
         }

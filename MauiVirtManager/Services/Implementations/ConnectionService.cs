@@ -38,22 +38,9 @@ namespace MauiVirtManager.Services
         /// Initializes a new instance of the <see cref="ConnectionService"/> class.
         /// </summary>
         /// <param name="baseUri">Host URI.</param>
-        public ConnectionService(string baseUri = "http://drastic-nuc.local:5000")
+        public ConnectionService()
         {
-            // HACK: Hardcoded URI for computer. Needs to be taken from the user!
-            this.baseEndpoint = baseUri;
             this.client = new HttpClient();
-            this.connection = new HubConnectionBuilder()
-                .WithUrl(string.Format(this.libvirtEndpoint, this.baseEndpoint))
-                .Build();
-
-            this.connection.On<string>("StoragePoolRefreshEventReceived", this.StoragePoolRefreshEventReceived);
-            this.connection.On<string>("StoragePoolLifecycleEventReceived", this.StoragePoolLifecycleEventReceived);
-            this.connection.On<string>("DomainEventReceived", this.DomainEventReceived);
-
-            this.connection.Closed += this.Connection_Closed;
-            this.connection.Reconnected += this.Connection_Reconnected;
-            this.connection.Reconnecting += this.Connection_Reconnecting;
         }
 
         /// <inheritdoc/>
@@ -61,6 +48,27 @@ namespace MauiVirtManager.Services
 
         /// <inheritdoc/>
         public HubConnectionState State => this.connection?.State ?? HubConnectionState.Disconnected;
+
+        /// <inheritdoc/>
+        public Task StartConnectionAsync(string connectionString)
+        {
+            if (this.connection == null || this.baseEndpoint != connectionString)
+            {
+                this.baseEndpoint = connectionString;
+                this.connection = new HubConnectionBuilder()
+                .WithUrl(string.Format(this.libvirtEndpoint, this.baseEndpoint))
+                .Build();
+                this.connection.On<string>("StoragePoolRefreshEventReceived", this.StoragePoolRefreshEventReceived);
+                this.connection.On<string>("StoragePoolLifecycleEventReceived", this.StoragePoolLifecycleEventReceived);
+                this.connection.On<string>("DomainEventReceived", this.DomainEventReceived);
+
+                this.connection.Closed += this.Connection_Closed;
+                this.connection.Reconnected += this.Connection_Reconnected;
+                this.connection.Reconnecting += this.Connection_Reconnecting;
+            }
+
+            return this.connection.StartAsync();
+        }
 
         /// <inheritdoc/>
         public Task<Connection> GetConnectionAsync()
@@ -90,12 +98,6 @@ namespace MauiVirtManager.Services
         public Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync()
         {
             return this.client.GetFromJsonAsync<List<StorageVolumeStoragePool>>(string.Format(this.storageVolumesEndpoint, this.baseEndpoint));
-        }
-
-        /// <inheritdoc/>
-        public Task StartConnectionAsync()
-        {
-            return this.connection.StartAsync();
         }
 
         /// <inheritdoc/>

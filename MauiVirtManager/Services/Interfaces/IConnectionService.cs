@@ -27,6 +27,13 @@ namespace MauiVirtManager.Services
         HubConnectionState State { get; }
 
         /// <summary>
+        /// Starts the connection to VirtManager server.
+        /// </summary>
+        /// <param name="connectionString">Connection String.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        Task StartConnectionAsync(string connectionString);
+
+        /// <summary>
         /// Gets the current Libvirt Connection.
         /// </summary>
         /// <returns><see cref="Connection"/>.</returns>
@@ -56,12 +63,6 @@ namespace MauiVirtManager.Services
         /// </summary>
         /// <returns>List of <see cref="StorageVolumeStoragePool"/>.</returns>
         Task<List<StorageVolumeStoragePool>> GetStorageVolumesAsync();
-
-        /// <summary>
-        /// Start SignalR connection to Server.
-        /// </summary>
-        /// <returns><see cref="Task"/>.</returns>
-        Task StartConnectionAsync();
 
         /// <summary>
         /// Start SignalR connection to Server.

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
 using MauiVirtManager.Services;
 using MauiVirtManager.Tools;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using VirtServer.Common;
 
@@ -28,26 +29,30 @@ namespace MauiVirtManager.ViewModels
         public DomainsViewModel(IServiceProvider services)
             : base(services)
         {
-            this.Connection.ConnectionEventHandler += Connection_EventHandler;
+            this.Connection.ConnectionEventHandler += this.Connection_EventHandler;
+            this.StartConnectionCommand = new AsyncCommand(
+                async () => await this.StartConnectionAsync(),
+                () => this.Connection.State == HubConnectionState.Disconnected,
+                this.Error);
             this.RefreshDomainListCommand = new AsyncCommand(
                 async () => await this.RefreshDomainListAsync(),
-                null,
+                () => this.Connection.State == HubConnectionState.Connected,
                 this.Error);
             this.DomainStateShutdownCommand = new AsyncCommand<Domain>(
                 async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Shutdown),
-                null,
+                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
             this.DomainStateSuspendCommand = new AsyncCommand<Domain>(
                 async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Suspend),
-                null,
+                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
             this.DomainStateResetCommand = new AsyncCommand<Domain>(
                 async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Reset),
-                null,
+                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
             this.DomainStateResumeCommand = new AsyncCommand<Domain>(
                 async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Resume),
-                null,
+                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
         }
 
@@ -75,6 +80,11 @@ namespace MauiVirtManager.ViewModels
         /// Gets the DomainStateResumeCommand.
         /// </summary>
         public AsyncCommand<Domain> DomainStateResumeCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the StartConnectionCommand.
+        /// </summary>
+        public AsyncCommand StartConnectionCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets the Domains.
@@ -109,15 +119,24 @@ namespace MauiVirtManager.ViewModels
             this.IsBusy = false;
         }
 
+        /// <summary>
+        /// Asks for users input and starts the connection to the server.
+        /// </summary>
+        /// <returns>see<see cref="Task"/>.</returns>
+        public async Task StartConnectionAsync()
+        {
+            var virtUrl = await this.Navigation.DisplayPromptAsync(Translations.Common.StartConnectionDialog, Translations.Common.StartConnectionButton);
+            if (!string.IsNullOrEmpty(virtUrl))
+            {
+                await this.Connection.StartConnectionAsync(virtUrl);
+                await this.RefreshDomainListAsync();
+            }
+        }
+
         /// <inheritdoc/>
         public override async Task LoadAsync()
         {
             await base.LoadAsync();
-            // TODO: Implement loading screen.
-            this.IsBusy = true;
-            await this.Connection.StartConnectionAsync();
-            await this.RefreshDomainListAsync();
-            this.IsBusy = false;
         }
 
         private void Connection_EventHandler(object sender, Tools.Utilities.ConnEventArgs e)

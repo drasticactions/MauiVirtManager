@@ -61,15 +61,6 @@ namespace MauiVirtManager.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Connection.
-        /// </summary>
-        public static string AddConnectionButton {
-            get {
-                return ResourceManager.GetString("AddConnectionButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string CloseButton {
@@ -93,6 +84,24 @@ namespace MauiVirtManager.Translations {
         public static string ErrorTitle {
             get {
                 return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Connection.
+        /// </summary>
+        public static string StartConnectionButton {
+            get {
+                return ResourceManager.GetString("StartConnectionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the URL of the MauiVirtManager Server.
+        /// </summary>
+        public static string StartConnectionDialog {
+            get {
+                return ResourceManager.GetString("StartConnectionDialog", resourceCulture);
             }
         }
     }

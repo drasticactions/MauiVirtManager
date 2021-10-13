@@ -11,7 +11,8 @@
             <ScrollView>
                 <HorizontalStackLayout>
                     <Button 
-                        Text="{x:Static resources:Common.AddConnectionButton}" />
+                        Command="{Binding StartConnectionCommand}" 
+                        Text="{x:Static resources:Common.StartConnectionButton}" />
                 </HorizontalStackLayout>
             </ScrollView>
             <CollectionView  ItemsSource="{Binding Domains}">
