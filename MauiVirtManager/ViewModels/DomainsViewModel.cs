@@ -27,6 +27,7 @@ namespace MauiVirtManager.ViewModels
         public DomainsViewModel(IServiceProvider services)
             : base(services)
         {
+            this.Connection.ConnectionEventHandler += Connection_EventHandler;
         }
 
         /// <summary>
@@ -42,8 +43,17 @@ namespace MauiVirtManager.ViewModels
         public override async Task LoadAsync()
         {
             await base.LoadAsync();
+            // TODO: Implement loading screen
+            this.IsBusy = true;
             await this.Connection.StartConnectionAsync();
             this.Domains = await this.Connection.GetDomainsAsync();
+            this.IsBusy = false;
+        }
+
+        private void Connection_EventHandler(object sender, Tools.Utilities.ConnEventArgs e)
+        {
+            // TODO: Change UI Based on Events handled here.
+            System.Diagnostics.Debug.WriteLine(e.ArgTypes);
         }
     }
 }
