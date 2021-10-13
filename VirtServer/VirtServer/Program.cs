@@ -55,6 +55,45 @@ app.MapGet("/storagevolumes", async context => {
     await context.Response.WriteAsJsonAsync(connection.StorageVolumes, jsonSerializerOptions);
 });
 
+app.MapPost("/domain", async context => {
+    try
+    {
+        var domainState = await context.Request.ReadFromJsonAsync<DomainStateUpdate>();
+        var domain = connection.GetDomainByUniqueId(domainState.DomainId);
+        switch (domainState.State)
+        {
+            case DomainState.Shutdown:
+                domain.Shutdown();
+                break;
+            case DomainState.Suspend:
+                domain.Suspend();
+                break;
+            case DomainState.Reset:
+                domain.Reset();
+                break;
+            case DomainState.Resume:
+                domain.Resume();
+                break;
+        }
+        await context.Response.WriteAsJsonAsync(domain, jsonSerializerOptions);
+    }
+    catch (global::System.Exception ex)
+    {
+        // TODO: Capture and show to user.
+        Console.WriteLine(ex);
+        throw;
+    }
+});
+
+app.MapGet("/domainimage", async context => {
+    // TODO: Cheap hack to verify this works
+    var id = context.Request.Query["uniqueid"];
+    var domain = connection.GetDomainByUniqueId(new Guid(id));
+    using var memoryStream = new MemoryStream();
+    domain.GetScreenshot(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+    context.Response.ContentType = "image/jpeg";
+    await context.Response.Body.WriteAsync(memoryStream.ToArray());
+});
 
 app.Run();
 
