@@ -29,8 +29,8 @@ namespace MauiVirtManager
 
             // Debug, used for Mock Data.
             // TODO: Could be used for Unit Testing?
-            // builder.Services.AddSingleton<IConnectionService, MockConnectionService>();
-            builder.Services.AddSingleton<IConnectionService, ConnectionService>();
+            builder.Services.AddSingleton<IConnectionService, MockConnectionService>();
+            // builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 
             builder.Services.AddTransient<DomainsViewModel>();
             builder.Services.AddTransient<DomainsPage>();

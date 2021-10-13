@@ -25,7 +25,7 @@ namespace MauiVirtManager.Services
         public event EventHandler<ConnEventArgs> ConnectionEventHandler;
 
         /// <inheritdoc/>
-        public HubConnectionState State => HubConnectionState.Connected;
+        public HubConnectionState State => HubConnectionState.Disconnected;
 
         /// <inheritdoc/>
         public Task<Connection> GetConnectionAsync()
@@ -64,15 +64,15 @@ namespace MauiVirtManager.Services
         }
 
         /// <inheritdoc/>
-        public Task<Domain> SetDomainStateAsync(DomainStateUpdate update)
+        public async Task<Domain> SetDomainStateAsync(DomainStateUpdate update)
         {
-            throw new NotImplementedException();
+            return new Domain() { State = VirDomainState.VIR_DOMAIN_RUNNING };
         }
 
         /// <inheritdoc/>
         public Task<Stream> GetDomainImageAsync(Guid domainId)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <inheritdoc/>
