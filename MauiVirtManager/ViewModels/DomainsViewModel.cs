@@ -43,7 +43,7 @@ namespace MauiVirtManager.ViewModels
         public override async Task LoadAsync()
         {
             await base.LoadAsync();
-            // TODO: Implement loading screen
+            // TODO: Implement loading screen.
             this.IsBusy = true;
             await this.Connection.StartConnectionAsync();
             this.Domains = await this.Connection.GetDomainsAsync();
