@@ -82,6 +82,6 @@ namespace MauiVirtManager.Services
         /// </summary>
         /// <param name="domainId">GUID of the domain.</param>
         /// <returns>Stream.</returns>
-        Task<System.IO.Stream> GetDomainImage(Guid domainId);
+        Task<System.IO.Stream> GetDomainImageAsync(Guid domainId);
     }
 }

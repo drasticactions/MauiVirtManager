@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
 using MauiVirtManager.Services;
@@ -101,7 +102,10 @@ namespace MauiVirtManager.ViewModels
         /// <returns>see<see cref="Task"/>.</returns>
         public async Task RefreshDomainListAsync()
         {
+            // TODO: Cheap Hack ignoring Cancellation Token, Need to implement.
+            var test = CancellationToken.None;
             this.Domains = await this.Connection.GetDomainsAsync();
+            Task.Run(() => Parallel.ForEachAsync<Domain>(this.Domains, CancellationToken.None, async (domain, test) => await this.UpdateDomainImageAsync(domain))).FireAndForgetSafeAsync(this.Error);
         }
 
         /// <summary>
@@ -125,7 +129,9 @@ namespace MauiVirtManager.ViewModels
         /// <returns>see<see cref="Task"/>.</returns>
         public async Task StartConnectionAsync()
         {
-            var virtUrl = await this.Navigation.DisplayPromptAsync(Translations.Common.StartConnectionDialog, Translations.Common.StartConnectionButton);
+            // HACK: Adding default value so I don't have to type in my server ip all the time.
+            // TODO: Store Connection addresses somewhere.
+            var virtUrl = await this.Navigation.DisplayPromptAsync(Translations.Common.StartConnectionDialog, Translations.Common.StartConnectionButton, "http://192.168.1.39:5000");
             if (!string.IsNullOrEmpty(virtUrl))
             {
                 await this.Connection.StartConnectionAsync(virtUrl);
@@ -143,6 +149,15 @@ namespace MauiVirtManager.ViewModels
         {
             // TODO: Change UI Based on Events handled here.
             System.Diagnostics.Debug.WriteLine(e.ArgTypes);
+        }
+
+        private async Task UpdateDomainImageAsync(Domain domain)
+        {
+            if (domain.IsActive)
+            {
+                domain.DomainImage = await this.Connection.GetDomainImageAsync(domain.UniqueId);
+                domain.OnPropertyChanged(nameof(domain.DomainImage));
+            }
         }
     }
 }

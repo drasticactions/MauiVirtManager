@@ -114,7 +114,7 @@ namespace MauiVirtManager.Services
         }
 
         /// <inheritdoc/>
-        public Task<Stream> GetDomainImage(Guid domainId)
+        public Task<Stream> GetDomainImageAsync(Guid domainId)
         {
             return this.client.GetStreamAsync($"{string.Format(this.domainImageEndpoint, this.baseEndpoint)}?uniqueId={domainId}");
         }

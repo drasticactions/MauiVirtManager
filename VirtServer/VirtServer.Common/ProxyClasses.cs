@@ -1,6 +1,8 @@
 ﻿using IDNT.AppBasics.Virtualization.Libvirt;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -104,7 +106,7 @@ namespace VirtServer.Common
         public double MetricsIntervalSeconds { get; set; }
     }
 
-    public partial class Domain
+    public partial class Domain : INotifyPropertyChanged
     {
         [JsonPropertyName("UniqueId")]
         public Guid UniqueId { get; set; }
@@ -138,7 +140,7 @@ namespace VirtServer.Common
         public object Connection { get; set; }
 
         [JsonPropertyName("State")]
-        public double State { get; set; }
+        public VirDomainState State { get; set; }
 
         [JsonPropertyName("DriverType")]
         public string DriverType { get; set; }
@@ -169,6 +171,16 @@ namespace VirtServer.Common
 
         [JsonPropertyName("CpuUtilization")]
         public CpuUtilization CpuUtilization { get; set; }
+
+        [JsonIgnore]
+        public Stream? DomainImage { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public partial class CpuUtilization

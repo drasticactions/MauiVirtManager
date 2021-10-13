@@ -18,8 +18,10 @@
             <CollectionView  ItemsSource="{Binding Domains}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type common:Domain}">
-                        <Grid>
-                            <Label Text="{Binding Name}" />
+                        <Grid ColumnDefinitions="75, *, 75">
+                            <Image HeightRequest="50" WidthRequest="50" Source="{Binding State, Converter={StaticResource DomainStateImageConverter}}" />
+                            <Label Grid.Column="1"  Text="{Binding Name}" />
+                            <Image Grid.Column="2" HeightRequest="50" WidthRequest="50" Source="{Binding DomainImage, Converter={StaticResource DomainScreenshotImageConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

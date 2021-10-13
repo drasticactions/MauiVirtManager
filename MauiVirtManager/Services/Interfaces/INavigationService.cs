@@ -67,7 +67,8 @@ namespace MauiVirtManager.Services
         /// </summary>
         /// <param name="title">Title of Prompt.</param>
         /// <param name="message">Message of Prompt.</param>
+        /// <param name="initialValue">Initial Value for Prompt.</param>
         /// <returns>String.</returns>
-        public Task<string> DisplayPromptAsync(string title, string message);
+        public Task<string> DisplayPromptAsync(string title, string message, string initialValue);
     }
 }

@@ -42,6 +42,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\state_paused.png" />
+	  <None Remove="Resources\Images\state_running.png" />
+	  <None Remove="Resources\Images\state_shutoff.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
 

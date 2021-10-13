@@ -3,10 +3,12 @@
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:local="clr-namespace:MauiVirtManager"
              x:Class="MauiVirtManager.App"
+             xmlns:converters="clr-namespace:MauiVirtManager.Tools.Converters"
              windows:Application.ImageDirectory="Assets">
     <Application.Resources>
         <ResourceDictionary>
-
+            <converters:DomainStateImageConverter x:Key="DomainStateImageConverter"/>
+            <converters:DomainScreenshotImageConverter x:Key="DomainScreenshotImageConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

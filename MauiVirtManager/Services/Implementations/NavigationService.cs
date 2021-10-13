@@ -79,9 +79,9 @@ namespace MauiVirtManager.Services
         }
 
         /// <inheritdoc/>
-        public Task<string> DisplayPromptAsync(string title, string message)
+        public Task<string> DisplayPromptAsync(string title, string message, string initialValue = "")
         {
-            return this.GetMainWindow().Page.DisplayPromptAsync(title, message, keyboard: Microsoft.Maui.Keyboard.Url);
+            return this.GetMainWindow().Page.DisplayPromptAsync(title, message, keyboard: Microsoft.Maui.Keyboard.Url, initialValue: initialValue);
         }
 
         private Window GetMainWindow()
