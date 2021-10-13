@@ -70,6 +70,42 @@ namespace MauiVirtManager.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        public static string DomainStatePaused {
+            get {
+                return ResourceManager.GetString("DomainStatePaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string DomainStateRunning {
+            get {
+                return ResourceManager.GetString("DomainStateRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved.
+        /// </summary>
+        public static string DomainStateSaved {
+            get {
+                return ResourceManager.GetString("DomainStateSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutoff.
+        /// </summary>
+        public static string DomainStateShutoff {
+            get {
+                return ResourceManager.GetString("DomainStateShutoff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An {0} has occured: {1} @ {2}.
         /// </summary>
         public static string ErrorMessage {

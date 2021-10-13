@@ -120,6 +120,18 @@
   <data name="CloseButton" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="DomainStatePaused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="DomainStateRunning" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="DomainStateSaved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="DomainStateShutoff" xml:space="preserve">
+    <value>Shutoff</value>
+  </data>
   <data name="ErrorMessage" xml:space="preserve">
     <value>An {0} has occured: {1} @ {2}</value>
     <comment>{0} is the name of the exception, {1} is the exception message and {2} is the stack.</comment>
