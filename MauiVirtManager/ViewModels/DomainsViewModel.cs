@@ -34,19 +34,19 @@ namespace MauiVirtManager.ViewModels
                 null,
                 this.Error);
             this.DomainStateShutdownCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Shutdown }),
+                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Shutdown),
                 null,
                 this.Error);
             this.DomainStateSuspendCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Suspend }),
+                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Suspend),
                 null,
                 this.Error);
             this.DomainStateResetCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Reset }),
+                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Reset),
                 null,
                 this.Error);
             this.DomainStateResumeCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Resume }),
+                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Resume),
                 null,
                 this.Error);
         }
@@ -97,19 +97,14 @@ namespace MauiVirtManager.ViewModels
         /// <summary>
         /// Updates the domain to a given state.
         /// </summary>
-        /// <param name="domainState"><see cref="DomainStateUpdate"/>.</param>
+        /// <param name="domain"><see cref="Domain"/>.</param>
+        /// <param name="domainState"><see cref="DomainState"/>.</param>
         /// <returns>see<see cref="Task"/>.</returns>
-        public async Task UpdateDomainStateAsync(DomainStateUpdate domainState)
+        public async Task UpdateDomainStateAsync(Domain domain, DomainState domainState)
         {
             this.IsBusy = true;
-            var domain = await this.Connection.SetDomainStateAsync(domainState);
-            var listDomain = this.Domains.FirstOrDefault(n => n.UniqueId == domainState.DomainId);
-            if (listDomain != null)
-            {
-                // TODO: Would we ever be in a state where we're setting a state where it's not in the list?
-                listDomain = domain;
-                this.OnPropertyChanged(nameof(this.Domains));
-            }
+            domain = await this.Connection.SetDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Shutdown });
+            this.OnPropertyChanged(nameof(this.Domains));
 
             this.IsBusy = false;
         }
