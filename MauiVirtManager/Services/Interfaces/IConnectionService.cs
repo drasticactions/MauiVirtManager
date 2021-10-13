@@ -68,5 +68,19 @@ namespace MauiVirtManager.Services
         /// </summary>
         /// <returns><see cref="Task"/>.</returns>
         Task StopConnectionAsync();
+
+        /// <summary>
+        /// Set the Domain State on a given Domain.
+        /// </summary>
+        /// <param name="update"><see cref="DomainStateUpdate"/>.</param>
+        /// <returns><see cref="Domain"/>.</returns>
+        Task<Domain> SetDomainStateAsync(DomainStateUpdate update);
+
+        /// <summary>
+        /// Gets the screenshot of the given domain.
+        /// </summary>
+        /// <param name="domainId">GUID of the domain.</param>
+        /// <returns>Stream.</returns>
+        Task<System.IO.Stream> GetDomainImage(Guid domainId);
     }
 }

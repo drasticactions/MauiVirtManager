@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -66,6 +67,18 @@ namespace MauiVirtManager.Services
         public Task StopConnectionAsync()
         {
             return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        public Task<Domain> SetDomainStateAsync(DomainStateUpdate update)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public Task<Stream> GetDomainImage(Guid domainId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

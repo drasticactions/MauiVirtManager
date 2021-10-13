@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -28,7 +29,7 @@ namespace MauiVirtManager.Services
         private string domainsEndpoint = "{0}/domains";
         private string domainEndpoint = "{0}/domain";
         private string storagePoolsEndpoint = "{0}/storagepools";
-        private string storagePoolEndpoint = "{0}/storagepool";
+        private string domainImageEndpoint = "{0}/domainimage";
         private string storageVolumesEndpoint = "{0}/storagevolumes";
         private string libvirtEndpoint = "{0}/libvirt";
         private HubConnection connection;
@@ -101,6 +102,19 @@ namespace MauiVirtManager.Services
         public Task StopConnectionAsync()
         {
             return this.connection.StopAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<Domain> SetDomainStateAsync(DomainStateUpdate update)
+        {
+            var result = await this.client.PostAsJsonAsync<DomainStateUpdate>($"{string.Format(this.domainEndpoint, this.baseEndpoint)}", update);
+            return await result.Content.ReadFromJsonAsync<Domain>();
+        }
+
+        /// <inheritdoc/>
+        public Task<Stream> GetDomainImage(Guid domainId)
+        {
+            return this.client.GetStreamAsync($"{string.Format(this.domainImageEndpoint, this.baseEndpoint)}?uniqueId={domainId}");
         }
 
         private Task Connection_Reconnecting(Exception arg)
