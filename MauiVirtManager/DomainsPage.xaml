@@ -10,7 +10,25 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type common:Domain}">
                     <Grid>
-                        <Label Text="{Binding Name}" />
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <local:DomainStateConverter x:Key="DomainStateConverter" />
+                            <Style TargetType="Label">
+                                <Style.Setters>
+                                    <Setter Property="Padding" Value="15,5,5,0" />
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <RoundRectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" WidthRequest="50" HeightRequest="50" Fill="Blue" Stroke="Red" StrokeThickness="3" />
+                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" BackgroundColor="AliceBlue" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding State, Converter={StaticResource DomainStateConverter}}" BackgroundColor="Bisque" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
