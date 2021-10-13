@@ -4,12 +4,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDNT.AppBasics.Virtualization.Libvirt;
 using MauiVirtManager.Services;
 using MauiVirtManager.Tools;
+using MauiVirtManager.Tools.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using VirtServer.Common;
@@ -21,7 +23,7 @@ namespace MauiVirtManager.ViewModels
     /// </summary>
     public class DomainsViewModel : BaseViewModel
     {
-        private List<Domain> domains;
+        private ObservableCollection<Domain> domains = new ObservableCollection<Domain>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainsViewModel"/> class.
@@ -90,7 +92,7 @@ namespace MauiVirtManager.ViewModels
         /// <summary>
         /// Gets or sets the Domains.
         /// </summary>
-        public List<Domain> Domains
+        public ObservableCollection<Domain> Domains
         {
             get => this.domains;
             set => this.SetProperty(ref this.domains, value);
@@ -104,7 +106,13 @@ namespace MauiVirtManager.ViewModels
         {
             // TODO: Cheap Hack ignoring Cancellation Token, Need to implement.
             var test = CancellationToken.None;
-            this.Domains = await this.Connection.GetDomainsAsync();
+            var domains = await this.Connection.GetDomainsAsync();
+            this.Domains.Clear();
+            foreach (var domain in domains)
+            {
+                this.Domains.Add(domain);
+            }
+
             Task.Run(() => Parallel.ForEachAsync<Domain>(this.Domains, CancellationToken.None, async (domain, test) => await this.UpdateDomainImageAsync(domain))).FireAndForgetSafeAsync(this.Error);
         }
 
@@ -117,7 +125,7 @@ namespace MauiVirtManager.ViewModels
         public async Task UpdateDomainStateAsync(Domain domain, DomainState domainState)
         {
             this.IsBusy = true;
-            domain = await this.Connection.SetDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = DomainState.Shutdown });
+            domain = await this.Connection.SetDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = domainState });
             this.OnPropertyChanged(nameof(this.Domains));
 
             this.IsBusy = false;
@@ -148,7 +156,54 @@ namespace MauiVirtManager.ViewModels
         private void Connection_EventHandler(object sender, Tools.Utilities.ConnEventArgs e)
         {
             // TODO: Change UI Based on Events handled here.
+            switch (e.ArgTypes)
+            {
+                case Tools.Utilities.ConnectionEventArgTypes.Empty:
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.SignalRReconnecting:
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.SignalRReconnected:
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.SignalRClosed:
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.DomainEventRecieved:
+                    DomainEventCommandProxy deProxy = (DomainEventCommandProxy)e.Data;
+                    var eventArgs = deProxy.EventArgs;
+                    Task.Run(() => this.UpdateDomainAsync(deProxy.Domain)).FireAndForgetSafeAsync(this.Error);
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.StoragePoolLifecycleEventReceived:
+                    break;
+                case Tools.Utilities.ConnectionEventArgTypes.StoragePoolRefreshEventReceived:
+                    break;
+                default:
+                    break;
+            }
+
             System.Diagnostics.Debug.WriteLine(e.ArgTypes);
+        }
+
+        private async Task UpdateDomainAsync(Domain domain)
+        {
+            if (domain == null)
+            {
+                throw new ArgumentNullException(nameof(domain));
+            }
+
+            // If we have a new domain from LibVirt, add it to the domains list.
+            // Else, update the existing one.
+            var listDomain = this.Domains.FirstOrDefault(n => n.UniqueId == domain.UniqueId);
+            if (listDomain == null)
+            {
+                listDomain = domain;
+                this.Domains.Add(listDomain);
+            }
+            else
+            {
+                listDomain.CopyPropertiesFrom(domain);
+            }
+
+            await this.UpdateDomainImageAsync(listDomain);
+
         }
 
         private async Task UpdateDomainImageAsync(Domain domain)
@@ -156,8 +211,14 @@ namespace MauiVirtManager.ViewModels
             if (domain.IsActive)
             {
                 domain.DomainImage = await this.Connection.GetDomainImageAsync(domain.UniqueId);
-                domain.OnPropertyChanged(nameof(domain.DomainImage));
             }
+            else
+            {
+                domain.DomainImage = null;
+            }
+
+            this.OnPropertyChanged(nameof(this.Domains));
+            domain.OnPropertyChanged(string.Empty);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using IDNT.AppBasics.Virtualization.Libvirt;
+using IDNT.AppBasics.Virtualization.Libvirt.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -25,25 +27,49 @@ namespace VirtServer.Common
         Resume
     }
 
-    public partial class DomainEventCommandProxy
+    public class DomainEventCommandProxy
     {
         [JsonPropertyName("Domain")]
         public Domain Domain { get; set; }
 
         [JsonPropertyName("EventArgs")]
-        public ConnectionEventArgs EventArgs { get; set; }
+        public DomainConnectionEventArgs EventArgs { get; set; }
     }
 
-    public partial class StoragePoolEventCommandProxy
+    public class StoragePoolEventCommandProxy
     {
         [JsonPropertyName("StoragePool")]
         public StoragePoolElement StoragePool { get; set; }
 
         [JsonPropertyName("EventArgs")]
-        public ConnectionEventArgs EventArgs { get; set; }
+        public StoragePoolLifecycleConnectionEventArgs EventArgs { get; set; }
     }
 
-    public partial class ConnectionEventArgs
+    public class DomainConnectionEventArgs
+    {
+        [JsonPropertyName("UniqueId")]
+        public Guid UniqueId { get; set; }
+
+        [JsonPropertyName("EventType")]
+        public VirDomainEventType EventType { get; set; }
+
+        [JsonPropertyName("Detail")]
+        public long Detail { get; set; }
+    }
+
+    public class StoragePoolLifecycleConnectionEventArgs
+    {
+        [JsonPropertyName("UniqueId")]
+        public Guid UniqueId { get; set; }
+
+        [JsonPropertyName("EventType")]
+        public VirStoragePoolEventLifecycleType EventType { get; set; }
+
+        [JsonPropertyName("Detail")]
+        public long Detail { get; set; }
+    }
+
+    public class ConnectionEventArgs
     {
         [JsonPropertyName("UniqueId")]
         public Guid UniqueId { get; set; }
@@ -55,7 +81,7 @@ namespace VirtServer.Common
         public long Detail { get; set; }
     }
 
-    public partial class Connection
+    public class Connection
     {
         [JsonPropertyName("IsAlive")]
         public bool IsAlive { get; set; }
@@ -76,7 +102,7 @@ namespace VirtServer.Common
         public Volume[]? StorageVolumes { get; set; }
     }
 
-    public partial class Configuration
+    public class Configuration
     {
         [JsonPropertyName("QemuDomainRunPath")]
         public string QemuDomainRunPath { get; set; }
@@ -106,8 +132,10 @@ namespace VirtServer.Common
         public double MetricsIntervalSeconds { get; set; }
     }
 
-    public partial class Domain : INotifyPropertyChanged
+    public class Domain : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonPropertyName("UniqueId")]
         public Guid UniqueId { get; set; }
 
@@ -175,15 +203,13 @@ namespace VirtServer.Common
         [JsonIgnore]
         public Stream? DomainImage { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 
-    public partial class CpuUtilization
+    public class CpuUtilization
     {
         [JsonPropertyName("LastSecond")]
         public double LastSecond { get; set; }
@@ -198,7 +224,7 @@ namespace VirtServer.Common
         public double[]? PerMinuteValues { get; set; }
     }
 
-    public partial class DiskDevice
+    public class DiskDevice
     {
         [JsonPropertyName("Volume")]
         public object Volume { get; set; }
@@ -225,7 +251,7 @@ namespace VirtServer.Common
         public bool IsReadOnly { get; set; }
     }
 
-    public partial class Address
+    public class Address
     {
         [JsonPropertyName("Type")]
         public double Type { get; set; }
@@ -255,7 +281,7 @@ namespace VirtServer.Common
         public double? Unit { get; set; }
     }
 
-    public partial class Driver
+    public class Driver
     {
         [JsonPropertyName("Name")]
         public string Name { get; set; }
@@ -264,7 +290,7 @@ namespace VirtServer.Common
         public string Type { get; set; }
     }
 
-    public partial class DiskDeviceSource
+    public class DiskDeviceSource
     {
         [JsonPropertyName("Name")]
         public object Name { get; set; }
@@ -279,7 +305,7 @@ namespace VirtServer.Common
         public object Host { get; set; }
     }
 
-    public partial class Target
+    public class Target
     {
         [JsonPropertyName("Device")]
         public string Device { get; set; }
@@ -288,7 +314,7 @@ namespace VirtServer.Common
         public double Bus { get; set; }
     }
 
-    public partial class GraphicsDevice
+    public class GraphicsDevice
     {
         [JsonPropertyName("Type")]
         public double Type { get; set; }
@@ -303,7 +329,7 @@ namespace VirtServer.Common
         public bool IsAutoPort { get; set; }
     }
 
-    public partial class NetworkInterface
+    public class NetworkInterface
     {
         [JsonPropertyName("Type")]
         public double Type { get; set; }
@@ -324,19 +350,19 @@ namespace VirtServer.Common
         public Address Address { get; set; }
     }
 
-    public partial class Mac
+    public class Mac
     {
         [JsonPropertyName("Address")]
         public string Address { get; set; }
     }
 
-    public partial class Model
+    public class Model
     {
         [JsonPropertyName("Type")]
         public string Type { get; set; }
     }
 
-    public partial class NetworkInterfaceSource
+    public class NetworkInterfaceSource
     {
         [JsonPropertyName("Network")]
         public string Network { get; set; }
@@ -345,7 +371,7 @@ namespace VirtServer.Common
         public object Bridge { get; set; }
     }
 
-    public partial class Node
+    public class Node
     {
         [JsonPropertyName("Hostname")]
         public string Hostname { get; set; }
@@ -375,7 +401,7 @@ namespace VirtServer.Common
         public double MemoryKBytes { get; set; }
     }
 
-    public partial class StoragePoolElement
+    public class StoragePoolElement
     {
         [JsonPropertyName("UniqueId")]
         public Guid UniqueId { get; set; }
@@ -405,7 +431,7 @@ namespace VirtServer.Common
         public Volume[]? Volumes { get; set; }
     }
 
-    public partial class Volume
+    public class Volume
     {
         [JsonPropertyName("Key")]
         public string Key { get; set; }
@@ -438,7 +464,7 @@ namespace VirtServer.Common
         public DateTimeOffset ModifiedAt { get; set; }
     }
 
-    public partial class StorageVolumeStoragePool
+    public class StorageVolumeStoragePool
     {
         [JsonPropertyName("UniqueId")]
         public Guid UniqueId { get; set; }
