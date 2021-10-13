@@ -29,8 +29,8 @@ namespace MauiVirtManager
 
             // Debug, used for Mock Data.
             // TODO: Could be used for Unit Testing?
-            builder.Services.AddSingleton<IConnectionService, MockConnectionService>();
-            // builder.Services.AddSingleton<IConnectionService, ConnectionService>();
+            //builder.Services.AddSingleton<IConnectionService, MockConnectionService>();
+            builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 
             builder.Services.AddTransient<DomainsViewModel>();
             builder.Services.AddTransient<DomainsPage>();
@@ -38,6 +38,9 @@ namespace MauiVirtManager
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
+                    fonts.AddFont("fa-solid-900.ttf", "FontAwesomeSolid");
+                    fonts.AddFont("fa-regular-400.ttf", "FontAwesomeRegular");
+                    fonts.AddFont("fa-brands-400", "FontAwesomeBrands");
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
