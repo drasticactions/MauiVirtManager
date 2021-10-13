@@ -3,29 +3,35 @@
 			 x:Class="MauiVirtManager.DomainsPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:MauiVirtManager.Translations"
              xmlns:common="clr-namespace:VirtServer.Common;assembly=VirtServer.Common"
              xmlns:local="clr-namespace:MauiVirtManager">
     <ContentPage.Content>
-        <VerticalStackLayout>
-            <ScrollView>
-                <HorizontalStackLayout>
-                    <Button 
-                        Command="{Binding StartConnectionCommand}" 
-                        Text="{x:Static resources:Common.StartConnectionButton}" />
-                </HorizontalStackLayout>
-            </ScrollView>
-            <CollectionView  ItemsSource="{Binding Domains}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type common:Domain}">
-                        <Grid ColumnDefinitions="75, *, 75">
-                            <Image HeightRequest="50" WidthRequest="50" Source="{Binding State, Converter={StaticResource DomainStateImageConverter}}" />
-                            <Label Grid.Column="1"  Text="{Binding Name}" />
-                            <Image Grid.Column="2" HeightRequest="50" WidthRequest="50" Source="{Binding DomainImage, Converter={StaticResource DomainScreenshotImageConverter}}" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
+        <CollectionView  ItemsSource="{Binding Domains}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type common:Domain}">
+                    <Grid>
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <local:DomainStateConverter x:Key="DomainStateConverter" />
+                            <Style TargetType="Label">
+                                <Style.Setters>
+                                    <Setter Property="Padding" Value="15,5,5,0" />
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <RoundRectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" WidthRequest="50" HeightRequest="50" Fill="Blue" Stroke="Red" StrokeThickness="3" />
+                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" BackgroundColor="AliceBlue" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding State, Converter={StaticResource DomainStateConverter}}" BackgroundColor="Bisque" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </ContentPage.Content>
 </local:BasePage>
