@@ -7,6 +7,7 @@
              windows:Application.ImageDirectory="Assets">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:DomainStateConverter x:Key="DomainStateConverter" />
             <converters:DomainStateImageConverter x:Key="DomainStateImageConverter"/>
             <converters:DomainScreenshotImageConverter x:Key="DomainScreenshotImageConverter"/>
         </ResourceDictionary>

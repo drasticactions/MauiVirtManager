@@ -3,7 +3,7 @@ using System.Globalization;
 using IDNT.AppBasics.Virtualization.Libvirt;
 using Microsoft.Maui.Controls;
 
-namespace MauiVirtManager
+namespace MauiVirtManager.Tools.Converters
 {
     /// <summary>
     /// Convert a <see cref="VirtServer.Common.Domain.State"/> to a string representation.
