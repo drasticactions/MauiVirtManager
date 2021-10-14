@@ -33,6 +33,8 @@ namespace MauiVirtManager
             builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 
             builder.Services.AddTransient<DomainsViewModel>();
+            builder.Services.AddTransient<DomainModalViewModel>();
+            builder.Services.AddTransient<DomainModalPage>();
             builder.Services.AddTransient<DomainsPage>();
             builder
                 .UseMauiApp<App>()

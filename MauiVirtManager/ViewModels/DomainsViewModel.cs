@@ -49,6 +49,10 @@ namespace MauiVirtManager.ViewModels
                 async () => await this.RefreshDomainListAsync(),
                 () => this.Connection.State == HubConnectionState.Connected,
                 this.Error);
+            this.OpenDomainModalCommand = new AsyncCommand(
+                async () => await this.OpenDomainModalAsync(this.SelectedDomain),
+                () => { return this.SelectedDomain != null && this.Connection.State == HubConnectionState.Connected; },
+                this.Error);
             this.DomainStateShutdownCommand = new AsyncCommand(
                 async () => await this.UpdateDomainStateAsync(this.SelectedDomain, DomainState.Shutdown),
                 () => { return this.SelectedDomain != null && (this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_SHUTOFF || this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_SHUTDOWN) && this.Connection.State == HubConnectionState.Connected; },
@@ -91,6 +95,11 @@ namespace MauiVirtManager.ViewModels
         /// Gets the DomainStateResumeCommand.
         /// </summary>
         public AsyncCommand DomainStateResumeCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the OpenDomainModalCommand.
+        /// </summary>
+        public AsyncCommand OpenDomainModalCommand { get; private set; }
 
         /// <summary>
         /// Gets the StartConnectionCommand.
@@ -182,6 +191,7 @@ namespace MauiVirtManager.ViewModels
             this.DomainStateSuspendCommand.RaiseCanExecuteChanged();
             this.DomainStateResetCommand.RaiseCanExecuteChanged();
             this.DomainStateResumeCommand.RaiseCanExecuteChanged();
+            this.OpenDomainModalCommand.RaiseCanExecuteChanged();
         }
 
         private void Connection_EventHandler(object sender, Tools.Utilities.ConnEventArgs e)
@@ -261,6 +271,16 @@ namespace MauiVirtManager.ViewModels
             }
 
             domain.OnPropertyChanged(nameof(domain.DomainImage));
+        }
+
+        private Task OpenDomainModalAsync(Domain domain)
+        {
+            if (domain == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            return this.Navigation.PushModalPageInMainWindowAsync(this.Services.ResolveWith<DomainModalPage>(this.SelectedDomain));
         }
     }
 }

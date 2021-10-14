@@ -25,6 +25,8 @@
                             FontSize="25" FontFamily="FontAwesomeRegular" Text="{x:Static app:IconFont.PauseCircle}" />
                         <Button Command="{Binding DomainStateShutdownCommand}" 
                             FontSize="25" FontFamily="FontAwesomeRegular" Text="{x:Static app:IconFont.StopCircle}" />
+                        <Button Command="{Binding OpenDomainModalCommand}" 
+                            FontSize="25" FontFamily="FontAwesomeSolid" Text="{x:Static app:IconFont.InfoCircle}" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </ScrollView>

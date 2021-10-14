@@ -37,6 +37,21 @@ namespace MauiVirtManager.Services
         public Task PushPageInMainWindowAsync(Page page);
 
         /// <summary>
+        /// Push Modal Page In Window.
+        /// </summary>
+        /// <param name="page"><see cref="Page"/> to navigate to.</param>
+        /// <param name="window"><see cref="Window"/>.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        public Task PushModalPageInWindowAsync(Page page, Window window);
+
+        /// <summary>
+        /// Push Modal Page In Main Window.
+        /// </summary>
+        /// <param name="page"><see cref="Page"/> to navigate to.</param>
+        /// <returns><see cref="Task"/>.</returns>
+        public Task PushModalPageInMainWindowAsync(Page page);
+
+        /// <summary>
         /// Pop Modal page from Main Window.
         /// </summary>
         /// <returns><see cref="Task"/>.</returns>

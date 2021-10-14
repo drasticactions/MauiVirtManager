@@ -54,6 +54,20 @@ namespace MauiVirtManager.Services
         }
 
         /// <inheritdoc/>
+        public Task PushModalPageInWindowAsync(Page page, Window window)
+        {
+            return window.Navigation == null
+                ? throw new ArgumentException("Window must have a NavigationPage as its base")
+                : window.Page.Navigation.PushModalAsync(page);
+        }
+
+        /// <inheritdoc/>
+        public Task PushModalPageInMainWindowAsync(Page page)
+        {
+            return this.PushModalPageInWindowAsync(page, this.GetMainWindow());
+        }
+
+        /// <inheritdoc/>
         public Task PopModalPageInMainWindowAsync()
         {
             return this.PopModalPageInWindowAsync(this.GetMainWindow());
