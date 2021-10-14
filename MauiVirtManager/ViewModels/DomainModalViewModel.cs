@@ -40,7 +40,7 @@ namespace MauiVirtManager.ViewModels
             this.random = new Random();
             this.selectedDomain = domain;
             this.chart = chart;
-            this.chart.YAxisMaxTicks = 100;
+            this.chart.ShowYAxisText = true;
             this.chartEntries = new List<ChartEntry>();
             for (var i = 0; i < 100; i++)
             {
