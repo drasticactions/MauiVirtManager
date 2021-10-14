@@ -3,6 +3,7 @@ using IDNT.AppBasics.Virtualization.Libvirt.Events;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Timers;
 using VirtServer.Common;
 
 var connection = LibvirtConnection.Connect("qemu:///system");
@@ -98,6 +99,12 @@ app.MapGet("/domainimage", async context => {
     await context.Response.Body.WriteAsync(memoryStream.ToArray());
 });
 
+var connectionTimer = new System.Timers.Timer(1000);
+connectionTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+// Timer to post connection events that don't have an event handle.
+// Like CPU usage. 
+connectionTimer.Start();
+
 app.Run();
 
 void Connection_StoragePoolRefreshEventReceived(object? sender, VirStoragePoolRefreshEventArgs e)
@@ -116,6 +123,20 @@ void Connection_StoragePoolLifecycleEventReceived(object? sender, VirStoragePool
 {
     var json = JsonSerializer.Serialize(new StoragePoolLifecycleEventCommand() { StoragePool = sender as LibvirtStoragePool, EventArgs = e }, jsonSerializerOptions);
     app.Services.GetService<IHubContext<LibvirtConnectionHub>>().Clients.All.SendAsync("StoragePoolLifecycleEventReceived", json);
+}
+
+void OnTimedEvent(object? sender, ElapsedEventArgs e)
+{
+    if (connection == null || !connection.IsAlive)
+    {
+        return;
+    }
+
+    foreach (var domain in connection.Domains.Where(n => n.IsActive))
+    {
+        var json = JsonSerializer.Serialize(new DomainEventCommand() { Domain = domain }, jsonSerializerOptions);
+        app.Services.GetService<IHubContext<LibvirtConnectionHub>>().Clients.All.SendAsync("DomainEventReceived", json);
+    }
 }
 
 
