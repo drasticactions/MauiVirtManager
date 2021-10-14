@@ -72,7 +72,10 @@ app.MapPost("/domain", async context => {
                 domain.Reset();
                 break;
             case DomainState.Resume:
-                domain.Resume();
+                if (domain.State == VirDomainState.VIR_DOMAIN_PAUSED)
+                    domain.Resume();
+                else
+                    domain.Create();
                 break;
         }
         await context.Response.WriteAsJsonAsync(domain, jsonSerializerOptions);
