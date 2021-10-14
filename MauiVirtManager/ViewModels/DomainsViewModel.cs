@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using IDNT.AppBasics.Virtualization.Libvirt;
 using MauiVirtManager.Services;
 using MauiVirtManager.Tools;
@@ -245,8 +246,8 @@ namespace MauiVirtManager.ViewModels
             // HACK HACK HACK
             // The CPU Virtualization value doesn't work in the Binded Libvirt Library.
             // For "Hacking" reasons, we're gonna cheat and make it up.
-            listDomain.CpuUtilization.LastSecond = this.random.Next(40, 60);
-            listDomain.CpuUtilization.PerSecondValues[listDomain.CpuUtilization.PerSecondValues.Count() - 1] = listDomain.CpuUtilization.LastSecond;
+            var randomValue = this.random.Next(40, 60);
+            listDomain.CpuUtilization.LastSecond = randomValue;
 
             this.RaiseCanExecute();
             if (updateImage)

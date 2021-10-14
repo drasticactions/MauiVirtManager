@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MauiVirtManager.Tools.Utilities;
 using MauiVirtManager.ViewModels;
+using Microcharts;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.PlatformConfiguration;
@@ -24,6 +25,8 @@ namespace MauiVirtManager
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DomainModalPage : BasePage
     {
+        private readonly Chart chart;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainModalPage"/> class.
         /// </summary>
@@ -34,7 +37,8 @@ namespace MauiVirtManager
         {
             this.On<iOS>().SetModalPresentationStyle(UIModalPresentationStyle.Automatic);
             this.InitializeComponent();
-            this.BindingContext = this.ViewModel = services.ResolveWith<DomainModalViewModel>(domain);
+            this.chartView.Chart = this.chart = new LineChart();
+            this.BindingContext = this.ViewModel = services.ResolveWith<DomainModalViewModel>(domain, this.chart);
         }
     }
 }

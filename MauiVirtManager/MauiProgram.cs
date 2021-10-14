@@ -9,6 +9,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Controls.Xaml;
 using Microsoft.Maui.Hosting;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace MauiVirtManager
 {
@@ -38,6 +39,7 @@ namespace MauiVirtManager
             builder.Services.AddTransient<DomainsPage>();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("fa-solid-900.ttf", "FontAwesomeSolid");

@@ -68,6 +68,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="DeepCloner" Version="0.10.2" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0-rc.1.21452.15" />
 	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.150" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
@@ -77,6 +78,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\External\Microcharts\Sources\Microcharts.Maui\Microcharts.Maui.csproj" />
+	  <ProjectReference Include="..\External\Microcharts\Sources\Microcharts\Microcharts.csproj" />
 	  <ProjectReference Include="..\VirtServer\VirtServer.Common\VirtServer.Common.csproj" />
 	</ItemGroup>
 

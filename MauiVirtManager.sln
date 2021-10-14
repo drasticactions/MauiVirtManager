@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiVirtManager", "MauiVirt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtServer.Common", "VirtServer\VirtServer.Common\VirtServer.Common.csproj", "{76CCB4E7-1B7E-41AF-BFA4-BB733B21F6ED}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microcharts.Maui", "External\Microcharts\Sources\Microcharts.Maui\Microcharts.Maui.csproj", "{65375920-6098-4C53-9EB3-E18098D40E80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microcharts", "External\Microcharts\Sources\Microcharts\Microcharts.csproj", "{68A1BBBB-28F4-472C-8A85-7CD886C95570}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,15 @@ Global
 		{76CCB4E7-1B7E-41AF-BFA4-BB733B21F6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76CCB4E7-1B7E-41AF-BFA4-BB733B21F6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76CCB4E7-1B7E-41AF-BFA4-BB733B21F6ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65375920-6098-4C53-9EB3-E18098D40E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65375920-6098-4C53-9EB3-E18098D40E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65375920-6098-4C53-9EB3-E18098D40E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65375920-6098-4C53-9EB3-E18098D40E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65375920-6098-4C53-9EB3-E18098D40E80}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{68A1BBBB-28F4-472C-8A85-7CD886C95570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A1BBBB-28F4-472C-8A85-7CD886C95570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A1BBBB-28F4-472C-8A85-7CD886C95570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A1BBBB-28F4-472C-8A85-7CD886C95570}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
