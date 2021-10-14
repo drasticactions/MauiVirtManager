@@ -1,0 +1,4 @@
+[submodule "External/Microcharts"]
+	path = External/Microcharts
+	url = git@github.com:drasticactions/Microcharts.git
+	branch = maui-reboot
