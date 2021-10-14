@@ -120,6 +120,9 @@
   <data name="CloseButton" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="CpuUsageText" xml:space="preserve">
+    <value>CPU Usage</value>
+  </data>
   <data name="DomainStatePaused" xml:space="preserve">
     <value>Paused</value>
   </data>

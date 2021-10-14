@@ -152,8 +152,7 @@ namespace VirtServer.Common
         public string OsType { get; set; }
 
         [JsonPropertyName("CpuTimeUsed")]
-        [JsonIgnore]
-        public DateTimeOffset CpuTimeUsed { get; set; }
+        public string CpuTimeUsed { get; set; }
 
         [JsonPropertyName("MemoryUsedKbyte")]
         public double MemoryUsedKbyte { get; set; }
