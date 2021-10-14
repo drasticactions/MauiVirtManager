@@ -42,6 +42,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <InterfaceDefinition Remove="Platforms\iOS\LaunchScreen.storyboard" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Fonts\fa-brands-400.ttf" />
 	  <None Remove="Resources\Fonts\fa-regular-400.ttf" />
 	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />

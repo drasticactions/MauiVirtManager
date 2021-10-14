@@ -31,13 +31,12 @@
             <CollectionView SelectedItem="{Binding SelectedDomain}" SelectionMode="Single" ItemsSource="{Binding Domains}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type common:Domain}">
-                        <Grid ColumnSpacing="10" RowDefinitions="Auto, Auto" ColumnDefinitions="75, Auto, *, 75">
+                        <Grid ColumnSpacing="10" RowDefinitions="Auto, Auto" ColumnDefinitions="75, *, 75">
                             <Image HeightRequest="50" WidthRequest="50" Grid.RowSpan="2" Source="{Binding State, Converter={StaticResource DomainStateImageConverter}}" />
                             <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" />
                             <Label Grid.Column="1" Grid.Row="1" Text="{Binding State, Converter={StaticResource DomainStateConverter}}" />
                             <Label Grid.Column="2" Grid.Row="0" Text="{x:Static resources:Common.CpuUsageText}" FontAttributes="Bold" />
                             <Label Grid.Column="2" Grid.Row="1" Text="{Binding CpuUtilization.LastSecond}" />
-                            <Image Grid.Column="3" Grid.RowSpan="2" HeightRequest="50" WidthRequest="50" Source="{Binding DomainImage, Converter={StaticResource DomainScreenshotImageConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
