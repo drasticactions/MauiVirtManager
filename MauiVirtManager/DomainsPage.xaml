@@ -5,17 +5,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:MauiVirtManager.Translations"
              xmlns:common="clr-namespace:VirtServer.Common;assembly=VirtServer.Common"
+             xmlns:app="clr-namespace:MauiVirtManager.Styles"
              xmlns:local="clr-namespace:MauiVirtManager">
     <ContentPage.Content>
         <VerticalStackLayout>
             <ScrollView>
-                <HorizontalStackLayout>
-                    <Button 
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Button 
                         Command="{Binding StartConnectionCommand}" 
                         Text="{x:Static resources:Common.StartConnectionButton}" />
-                </HorizontalStackLayout>
+                        <Button Command="{Binding RefreshDomainListCommand}" 
+                            FontSize="25" FontFamily="FontAwesomeSolid" Text="{x:Static app:IconFont.Sync}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Command="{Binding DomainStateResumeCommand}" 
+                            FontSize="25" FontFamily="FontAwesomeRegular" Text="{x:Static app:IconFont.PlayCircle}" />
+                        <Button Command="{Binding DomainStateSuspendCommand}" 
+                            FontSize="25" FontFamily="FontAwesomeRegular" Text="{x:Static app:IconFont.PauseCircle}" />
+                        <Button Command="{Binding DomainStateShutdownCommand}" 
+                            FontSize="25" FontFamily="FontAwesomeRegular" Text="{x:Static app:IconFont.StopCircle}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
             </ScrollView>
-            <CollectionView  ItemsSource="{Binding Domains}">
+            <CollectionView SelectedItem="{Binding SelectedDomain}" SelectionMode="Single" ItemsSource="{Binding Domains}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type common:Domain}">
                         <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="75, *, 75">

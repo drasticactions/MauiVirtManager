@@ -121,6 +121,13 @@ namespace MauiVirtManager.ViewModels
         }
 
         /// <summary>
+        /// Raise Can Execute Commands.
+        /// </summary>
+        public virtual void RaiseCanExecute()
+        {
+        }
+
+        /// <summary>
         /// Sets title for page.
         /// </summary>
         /// <param name="title">The Title.</param>

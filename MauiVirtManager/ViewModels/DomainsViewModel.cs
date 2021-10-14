@@ -25,6 +25,8 @@ namespace MauiVirtManager.ViewModels
     {
         private ObservableCollection<Domain> domains = new ObservableCollection<Domain>();
 
+        private Domain selectedDomain;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainsViewModel"/> class.
         /// </summary>
@@ -41,21 +43,21 @@ namespace MauiVirtManager.ViewModels
                 async () => await this.RefreshDomainListAsync(),
                 () => this.Connection.State == HubConnectionState.Connected,
                 this.Error);
-            this.DomainStateShutdownCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Shutdown),
-                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
+            this.DomainStateShutdownCommand = new AsyncCommand(
+                async () => await this.UpdateDomainStateAsync(this.SelectedDomain, DomainState.Shutdown),
+                () => { return this.SelectedDomain != null && (this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_SHUTOFF || this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_SHUTDOWN) && this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
-            this.DomainStateSuspendCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Suspend),
-                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
+            this.DomainStateSuspendCommand = new AsyncCommand(
+                async () => await this.UpdateDomainStateAsync(this.SelectedDomain, DomainState.Suspend),
+                () => { return this.SelectedDomain != null && this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_PAUSED && this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
-            this.DomainStateResetCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Reset),
-                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
+            this.DomainStateResetCommand = new AsyncCommand(
+                async () => await this.UpdateDomainStateAsync(this.SelectedDomain, DomainState.Reset),
+                () => { return this.SelectedDomain != null && this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
-            this.DomainStateResumeCommand = new AsyncCommand<Domain>(
-                async (domain) => await this.UpdateDomainStateAsync(domain, DomainState.Resume),
-                (domain) => { return this.Connection.State == HubConnectionState.Connected; },
+            this.DomainStateResumeCommand = new AsyncCommand(
+                async () => await this.UpdateDomainStateAsync(this.SelectedDomain, DomainState.Resume),
+                () => { return this.SelectedDomain != null && this.SelectedDomain.State != VirDomainState.VIR_DOMAIN_RUNNING && this.Connection.State == HubConnectionState.Connected; },
                 this.Error);
         }
 
@@ -67,22 +69,22 @@ namespace MauiVirtManager.ViewModels
         /// <summary>
         /// Gets the DomainStateShutdownCommand.
         /// </summary>
-        public AsyncCommand<Domain> DomainStateShutdownCommand { get; private set; }
+        public AsyncCommand DomainStateShutdownCommand { get; private set; }
 
         /// <summary>
         /// Gets the DomainStateSuspendCommand.
         /// </summary>
-        public AsyncCommand<Domain> DomainStateSuspendCommand { get; private set; }
+        public AsyncCommand DomainStateSuspendCommand { get; private set; }
 
         /// <summary>
         /// Gets the DomainStateResetCommand.
         /// </summary>
-        public AsyncCommand<Domain> DomainStateResetCommand { get; private set; }
+        public AsyncCommand DomainStateResetCommand { get; private set; }
 
         /// <summary>
         /// Gets the DomainStateResumeCommand.
         /// </summary>
-        public AsyncCommand<Domain> DomainStateResumeCommand { get; private set; }
+        public AsyncCommand DomainStateResumeCommand { get; private set; }
 
         /// <summary>
         /// Gets the StartConnectionCommand.
@@ -96,6 +98,19 @@ namespace MauiVirtManager.ViewModels
         {
             get => this.domains;
             set => this.SetProperty(ref this.domains, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the Domains.
+        /// </summary>
+        public Domain SelectedDomain
+        {
+            get => this.selectedDomain;
+            set
+            {
+                this.SetProperty(ref this.selectedDomain, value);
+                this.RaiseCanExecute();
+            }
         }
 
         /// <summary>
@@ -125,9 +140,9 @@ namespace MauiVirtManager.ViewModels
         public async Task UpdateDomainStateAsync(Domain domain, DomainState domainState)
         {
             this.IsBusy = true;
-            domain = await this.Connection.SetDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = domainState });
-            this.OnPropertyChanged(nameof(this.Domains));
-
+            var newDomain = await this.Connection.SetDomainStateAsync(new DomainStateUpdate() { DomainId = domain.UniqueId, State = domainState });
+            domain.CopyPropertiesFrom(newDomain);
+            this.RaiseCanExecute();
             this.IsBusy = false;
         }
 
@@ -151,6 +166,16 @@ namespace MauiVirtManager.ViewModels
         public override async Task LoadAsync()
         {
             await base.LoadAsync();
+        }
+
+        /// <inheritdoc/>
+        public override void RaiseCanExecute()
+        {
+            this.RefreshDomainListCommand.RaiseCanExecuteChanged();
+            this.DomainStateShutdownCommand.RaiseCanExecuteChanged();
+            this.DomainStateSuspendCommand.RaiseCanExecuteChanged();
+            this.DomainStateResetCommand.RaiseCanExecuteChanged();
+            this.DomainStateResumeCommand.RaiseCanExecuteChanged();
         }
 
         private void Connection_EventHandler(object sender, Tools.Utilities.ConnEventArgs e)
@@ -202,14 +227,16 @@ namespace MauiVirtManager.ViewModels
                 listDomain.CopyPropertiesFrom(domain);
             }
 
+            this.RaiseCanExecute();
             await this.UpdateDomainImageAsync(listDomain);
-
         }
 
         private async Task UpdateDomainImageAsync(Domain domain)
         {
             if (domain.IsActive)
             {
+                // HACK: If the machine is being created, we don't have an image and need to wait a bit.
+                await Task.Delay(1000);
                 domain.DomainImage = await this.Connection.GetDomainImageAsync(domain.UniqueId);
             }
             else
